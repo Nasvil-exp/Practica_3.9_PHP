@@ -24,8 +24,19 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'due_date' => 'required|date',
+            'status' => 'required|in:pendiente,en progreso,completado',
+        ]);
+
+        $request->user()->projects()->create($validated);
+
+        return redirect()->route('projects.index')
+            ->with('success', 'Proyecto creado correctamente.');
     }
+
 
     public function show(Project $project)
     {
@@ -44,6 +55,11 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
-        //
+    abort_unless($project->user_id === request()->user()->id, 403);
+
+    $project->delete();
+
+    return redirect()->route('projects.index')
+        ->with('success', 'Proyecto eliminado correctamente.');
     }
 }

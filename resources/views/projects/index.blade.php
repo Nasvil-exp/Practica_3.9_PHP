@@ -41,6 +41,19 @@
                                 <p class="text-sm text-gray-500">
                                     Estado: {{ $project->status }}
                                 </p>
+
+                                @if ($project->user_id === request()->user()->id)
+                                    <form method="POST" action="{{ route('projects.destroy', $project) }}"
+                                        onsubmit="return confirm('¿Estás seguro de que quieres eliminar este proyecto?')">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit"
+                                                class="mt-3 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         @endforeach
                     </div>
