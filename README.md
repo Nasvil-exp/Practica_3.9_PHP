@@ -33,7 +33,7 @@ También se pueden asignar roles y horas de contribución a los participantes de
 
 ## 4. Instalación y ejecución
 
-Para ejecutar el proyecto es necesario tener instalados Docker Desktop, PHP y Composer, además de Node.js y NPM.
+Para ejecutar el proyecto es necesario tener Docker Desktop, PHP y Composer, además de Node.js y NPM.
 
 ### 4.1. Descargar el proyecto
 
@@ -48,9 +48,15 @@ cd Practica_3.9_PHP
 composer install
 ```
 
+Si Composer no está instalado en Windows, se puede utilizar Docker desde PowerShell:
+
+```powershell
+docker run --rm -v "${PWD}:/app" -w /app composer:2 install
+```
+
 ### 4.3. Configurar el entorno
 
-Copiar el archivo `.env.example` y crear un archivo llamado `.env`.
+Copiar `.env.example` para crear el archivo `.env`.
 
 En PowerShell:
 
@@ -58,11 +64,11 @@ En PowerShell:
 Copy-Item .env.example .env
 ```
 
-El archivo `.env.example` incluye la configuración de MySQL y el puerto 8082.
+La configuración preparada para esta práctica utiliza MySQL y el puerto 8082.
 
 ### 4.4. Iniciar Docker
 
-Con Docker Desktop funcionando, ejecutar:
+Con Docker Desktop funcionando:
 
 ```bash
 docker compose up -d --build
@@ -85,7 +91,7 @@ docker compose exec laravel.test php artisan migrate --seed
 ### 4.6. Instalar y compilar los estilos
 
 ```bash
-npm install
+npm ci
 npm run build
 ```
 
@@ -97,25 +103,30 @@ http://localhost:8082
 
 ## 5. Usuarios de prueba
 
-Los seeders crean tres usuarios para probar la aplicación.
+El seeder crea tres usuarios para comprobar el funcionamiento de la aplicación.
 
-| Nombre
+| Nombre | Correo electrónico |
 |---|---|
-| PacoPorros 
-| agalsan1808 
-| Carlos López
+| Ana García | ana@example.com |
+| Carlos López | carlos@example.com |
+| María Sánchez | maria@example.com |
 
-Estos usuarios permiten comprobar los permisos, los proyectos y las relaciones entre participantes.
+**Contraseña de los usuarios de prueba:** `password`
+
+También se crean dos proyectos con participantes, roles y horas de contribución para comprobar las relaciones y permisos.
 
 ## 6. Base de datos
 
-La aplicación utiliza las siguientes tablas principales:
+La aplicación utiliza tres tablas principales:
 
 - **users:** almacena los usuarios registrados.
-- **projects:** almacena los proyectos y su propietario.
-- **project_user:** relaciona participantes y proyectos, incluyendo su rol y horas de contribución.
+- **projects:** almacena los proyectos, sus datos y el propietario.
+- **project_user:** relaciona los usuarios participantes con los proyectos y guarda su rol y horas de contribución.
 
-Se utiliza una relación **uno a muchos (1:N)** entre el propietario y sus proyectos, y una relación **muchos a muchos (N:N)** entre usuarios participantes y proyectos.
+Las relaciones utilizadas son:
+
+- **1:N:** un usuario puede ser propietario de varios proyectos.
+- **N:N:** un proyecto puede tener varios participantes y un usuario puede participar en varios proyectos.
 
 ## 7. Repositorio
 
