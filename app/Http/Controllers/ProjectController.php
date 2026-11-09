@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use App\Models\User;
 
 class ProjectController extends Controller
 {
@@ -75,17 +75,19 @@ class ProjectController extends Controller
             ->with('success', 'Proyecto actualizado correctamente.');
     }
 
-    
     public function addParticipant(Request $request, Project $project)
     {
         abort_unless($project->user_id === $request->user()->id, 403);
 
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'role' => 'required|string|max:255',
-            'contribution_hours' => 'required|integer|min:0',
-        ]);
-
+    $validated = $request->validate([
+        'user_id' => [
+            'required',
+            'exists:users,id',
+            'not_in:' . $project->user_id,
+        ],
+        'role' => 'required|string|max:255',
+        'contribution_hours' => 'required|integer|min:0',
+    ]);
 
         if ($project->participants()->where('users.id', $validated['user_id'])->exists()) {
             return back()->withErrors([
@@ -101,8 +103,6 @@ class ProjectController extends Controller
         return redirect()->route('projects.show', $project)
             ->with('success', 'Participante añadido correctamente.');
     }
-
-
     public function destroy(Project $project)
     {
         abort_unless($project->user_id === request()->user()->id, 403);

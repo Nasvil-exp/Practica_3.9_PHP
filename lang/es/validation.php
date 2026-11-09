@@ -10,6 +10,7 @@ return [
     'date' => 'El campo :attribute debe ser una fecha válida.',
     'exists' => 'El usuario seleccionado no existe.',
     'in' => 'El valor seleccionado para :attribute no es válido.',
+    'not_in' => 'El usuario seleccionado no es válido.',
 
     'min' => [
         'numeric' => 'El campo :attribute debe ser como mínimo :min.',
