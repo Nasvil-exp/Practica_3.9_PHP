@@ -1,58 +1,125 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Práctica 3.9 - Gestión de Proyectos con Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Curso:** 2.º DAW  
+**Asignatura:** Desarrollo Web en Entorno Servidor
 
-## About Laravel
+## 1. Descripción
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+En esta práctica he desarrollado una aplicación web con Laravel para gestionar proyectos colaborativos.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Los usuarios pueden registrarse, iniciar sesión, crear proyectos y consultar su información. Cada proyecto tiene un propietario, que es el único que puede editarlo, eliminarlo y añadir participantes.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+También se pueden asignar roles y horas de contribución a los participantes de cada proyecto.
 
-## Learning Laravel
+## 2. Tecnologías utilizadas
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- PHP y Laravel 13
+- Laravel Breeze para la autenticación
+- Laravel Sail y Docker
+- MySQL 8.4
+- Blade y Tailwind CSS
+- Git y GitHub
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 3. Funcionalidades
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- Registro e inicio de sesión.
+- Página de bienvenida para visitantes.
+- Listado y detalles de proyectos.
+- Creación, edición y eliminación de proyectos.
+- Control de permisos para que solo el propietario pueda modificar sus proyectos.
+- Incorporación de usuarios registrados como participantes.
+- Asignación de roles y horas de contribución.
+- Datos de prueba mediante seeders.
 
-## Agentic Development
+## 4. Instalación y ejecución
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Para ejecutar el proyecto es necesario tener instalados Docker Desktop, PHP y Composer, además de Node.js y NPM.
+
+### 4.1. Descargar el proyecto
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/Nasvil-exp/Practica_3.9_PHP.git
+cd Practica_3.9_PHP
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 4.2. Instalar las dependencias de PHP
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 4.3. Configurar el entorno
 
-## Code of Conduct
+Copiar el archivo `.env.example` y crear un archivo llamado `.env`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+En PowerShell:
 
-## Security Vulnerabilities
+```powershell
+Copy-Item .env.example .env
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+El archivo `.env.example` incluye la configuración de MySQL y el puerto 8082.
 
-## License
+### 4.4. Iniciar Docker
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Con Docker Desktop funcionando, ejecutar:
+
+```bash
+docker compose up -d --build
+```
+
+### 4.5. Preparar Laravel y la base de datos
+
+Generar la clave de la aplicación:
+
+```bash
+docker compose exec laravel.test php artisan key:generate
+```
+
+Ejecutar las migraciones y los seeders:
+
+```bash
+docker compose exec laravel.test php artisan migrate --seed
+```
+
+### 4.6. Instalar y compilar los estilos
+
+```bash
+npm install
+npm run build
+```
+
+### 4.7. Acceder a la aplicación
+
+Abrir en el navegador:
+
+http://localhost:8082
+
+## 5. Usuarios de prueba
+
+Los seeders crean tres usuarios para probar la aplicación.
+
+| Nombre
+|---|---|
+| PacoPorros 
+| agalsan1808 
+| Carlos López
+
+Estos usuarios permiten comprobar los permisos, los proyectos y las relaciones entre participantes.
+
+## 6. Base de datos
+
+La aplicación utiliza las siguientes tablas principales:
+
+- **users:** almacena los usuarios registrados.
+- **projects:** almacena los proyectos y su propietario.
+- **project_user:** relaciona participantes y proyectos, incluyendo su rol y horas de contribución.
+
+Se utiliza una relación **uno a muchos (1:N)** entre el propietario y sus proyectos, y una relación **muchos a muchos (N:N)** entre usuarios participantes y proyectos.
+
+## 7. Repositorio
+
+El código fuente y el historial de commits están disponibles en:
+
+https://github.com/Nasvil-exp/Practica_3.9_PHP
+
