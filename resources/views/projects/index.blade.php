@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -8,6 +7,12 @@
 
     <div class="py-10">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            
+                @if (session('success'))
+                    <div style="background-color: #dcfce7; color: #166534; padding: 14px; border-radius: 8px; margin-bottom: 20px;">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
             <div style="background-color: white; padding: 28px; border-radius: 10px; border: 1px solid #e5e7eb; box-shadow: 0 2px 5px rgba(0,0,0,0.04);">
 

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -190,17 +189,21 @@
 
                 <h1>Organiza tus proyectos fácilmente</h1>
 
+                
                 <p>
                     Una plataforma para crear y gestionar proyectos,
-                    trabajar con otros usuarios y llevar un seguimiento
-                    de las tareas y horas de participación.
+                    colaborar con otros usuarios y consultar los roles
+                    y las horas de contribución de cada participante.
                 </p>
 
+
                 @auth
+                    
                     <a href="{{ route('projects.index') }}"
-                       class="button button-primary">
-                        Ver mis proyectos
+                    class="button button-primary">
+                        Ver proyectos
                     </a>
+
                 @else
                     <a href="{{ route('register') }}"
                        class="button button-primary">
