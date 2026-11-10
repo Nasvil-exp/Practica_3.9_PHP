@@ -1,3 +1,4 @@
+
 <?php
 
 use App\Http\Controllers\ProfileController;
@@ -15,9 +16,8 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::resource('projects', ProjectController::class);
 
-    Route::post('/projects/{project}/participants',
-        [ProjectController::class, 'addParticipant']
-    )->name('projects.participants.store');
+    Route::post('/projects/{project}/participants', [ProjectController::class, 'addParticipant'])
+        ->name('projects.participants.store');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -25,5 +25,6 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
 
 
